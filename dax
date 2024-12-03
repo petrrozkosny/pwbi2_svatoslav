@@ -24,3 +24,23 @@ ADDCOLUMNS( -- krok 3
 ,"mesic",MONTH([datum])
 -- ============== konec sloupecky pridavane funkce ADDCOLUMNS ==============
 )
+
+
+_________________________________________________________________________________
+
+21 mezirocni rozdil srazek v prvnim ctvrtleti v ruzyne = 
+VAR tento_rok = 
+    CALCULATE(
+        SUM(data[Srazky]),
+    dim_datumy[kvartal] = 1,
+    dim_lokality[Lokalita] = "RUZYNE")
+
+VAR minuly_rok = 
+    CALCULATE(
+        SUM(data[Srazky]),
+    dim_datumy[kvartal] = 1,
+    dim_lokality[Lokalita] = "RUZYNE",
+    dim_datumy[rok] = MAX(dim_datumy[rok]) - 1)
+
+RETURN 
+tento_rok - minuly_rok
