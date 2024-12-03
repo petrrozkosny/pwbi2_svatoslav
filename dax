@@ -1,0 +1,26 @@
+dim_datumy = 
+/*
+Funkce ADDCOLUMNS() pridava sloupecky do tabulky.
+Tabulku jsme si vyrobili za pomoci funkce SELECTCOLUMNS()
+*/
+ADDCOLUMNS( -- krok 3
+-- =============== tabulka vracena funkci SELECTCOLUMNS ===================
+    /*
+    Funkce SELECTCOLUMNS() vybira sloupce z tabulky, v nasem pripade vybirame sloupec [date]
+    a jeho hodnoty nasledne pouzijeme pro sloupec datum
+    */
+    SELECTCOLUMNS( -- krok 2
+        -- Funkce CALENDARAUTO() prochazi datovy model, vsechny datumove sloupce,
+        -- a nasledne vytvori souvislou datumovou radu mezi nejmensim a nejvetsim datumem
+        -- nazev sloupce, ktery je navratovou hodnotou, je Date
+        CALENDARAUTO(), --krok 1
+    "datum",
+    [Date])
+-- =============== konec tabulka vracena funkci SELECTCOLUMNS ===================,
+
+-- ============== sloupecky pridavane funkce ADDCOLUMNS ==============
+,"rok",YEAR([datum])
+,"kvartal",QUARTER([datum])
+,"mesic",MONTH([datum])
+-- ============== konec sloupecky pridavane funkce ADDCOLUMNS ==============
+)
