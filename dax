@@ -44,3 +44,79 @@ VAR minuly_rok =
 
 RETURN 
 tento_rok - minuly_rok
+
+
+__________________________________________________________________________________________________
+
+35 nejsrazkovejsi mesic = 
+
+-- srazky v danem roce a mesici
+VAR srazky = SUM(data[Srazky])
+
+
+-- maximalni mesicni srazky v danem mesici
+
+VAR _tabulka = 
+
+ADDCOLUMNS(
+    ALL(data[rok]),
+"mesicni srazky",
+CALCULATE(SUM(data[Srazky])))
+
+RETURN
+IF(srazky = MAXX(_tabulka,[mesicni srazky]),"GOLD")
+
+______________________________________________________________________________________________________
+
+36 nejmene srazkovy rok = 
+-- srazky v jednotlivych bodech vizualu
+VAR srazky = SUM(data[Srazky])
+
+VAR _tabulka = 
+ADDCOLUMNS(
+    ALL(data[rok]),
+"rocni_srazky",
+CALCULATE(SUM(data[Srazky])))
+
+VAR _min_srazky = MINX(_tabulka,[rocni_srazky])
+
+RETURN 
+IF(srazky = _min_srazky,"GRAY")
+
+
+________________________________________________________________________________________________________
+
+37 maximalni rocni srazky = 
+
+MAXX(
+    -- tabulka
+    ALL(data[rok]),
+    -- sloupec, ve kterem hledame maximalni hodnotu
+    CALCULATE(SUM(data[Srazky])))
+
+___________________________________________________________________________________________________________
+
+38 prumerne mesicni srazky = 
+
+AVERAGEX(
+    ALL(data[rok],data[mesic]),
+CALCULATE(SUM(data[Srazky])))
+__________________________________________________________________________________________________________
+
+39 maximalni srazky = max(data[Srazky])
+
+___________________________________________________________________________________________________________
+
+40 roky maximalnich srazek = 
+
+VAR _tabulka = 
+ADDCOLUMNS(    
+    ALL(data[rok]),
+"rocni srazky",
+CALCULATE(SUM(data[Srazky])))
+
+VAR _max_hodnota = MAXX(_tabulka,[rocni srazky])
+
+RETURN
+CONCATENATEX(
+    FILTER(_tabulka,[rocni srazky] = _max_hodnota),data[rok])
